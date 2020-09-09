@@ -20,7 +20,7 @@ egen freqsanU=count(totalimprovedsan_used_u) , by(country_file)
 egen freqwatR=count(totalimprovedwat_used_r) , by(country_file)
 egen freqsanR=count(totalimprovedsan_used_r) , by(country_file)
 order country_file code year totalimprovedwat_used_t totalimprovedsan_used_t totalimprovedwat_used_u totalimprovedwat_used_r totalimprovedsan_used_u totalimprovedsan_used_r  freqwat freqsan freqwatU freqwatR freqsanU freqsanR	
-save "/Users/DHY/Desktop/3files/Graph_data_clearFreq.dta", replace
+save "/./Desktop/3files/Graph_data_clearFreq.dta", replace
 
 collapse (count)  totalimprovedwat_used_t totalimprovedsan_used_t  (mean) meanwat= totalimprovedwat_used_t meansan= totalimprovedsan_used_t  (sd) sdwat= totalimprovedwat_used_t sdsan= totalimprovedsan_used_t , by(country_file)
 gen freqsanCat="San_>10" if  freqsan>10
@@ -74,7 +74,7 @@ tabstat year, by(country_file) s(max, min) // copy value to excel and generate a
 clear
 br
 
-use "/Users/DHY/Dropbox/2016_WASH/3files/yearAppend_Original.dta"
+use "/./Dropbox/2016_WASH/3files/yearAppend_Original.dta"
 
 //generate base variables
 rename var1 country_file
@@ -132,7 +132,7 @@ save year_predict2.dta
 		replace yearmin=. if code=="year_Predict"
 		drop yearmin
 		drop yearmax
-		save "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_5year.dta" ,replace
+		save "/./Dropbox/2016_WASH/3files/Graph_data_5year.dta" ,replace
 		
 		append using year_predict2 // Use this for year forecating +2
 		save Graph_data_Yearappend2.dta,replace
@@ -141,7 +141,7 @@ save year_predict2.dta
 		replace yearmin=. if code=="year_Predict"
 		drop yearmin
 		drop yearmax
-		save "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_2year.dta" ,replace
+		save "/./Dropbox/2016_WASH/3files/Graph_data_2year.dta" ,replace
 
 
 ** 3. Subsample random selection and sensitivity check (measurement: RMSE) 
@@ -223,7 +223,7 @@ tabstat year, by(country_file) s(max, min) // copy value to excel and generate a
 clear
 br
 
-use "/Users/DHY/Dropbox/2016_WASH/3files/yearAppend_Original.dta"
+use "/./Dropbox/2016_WASH/3files/yearAppend_Original.dta"
 
 *generate base variables
 rename var1 country_file
@@ -274,7 +274,7 @@ save year_predict2.dta
 clear all
 set more off
 
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta"
+use "/./Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta"
 
 
 ** A. Regression and extrapoliation 
@@ -314,7 +314,7 @@ foreach i of local levels   {
 	
 **  B. compare RMSE **		
 	clear
-	use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta" //make sure to use the orignal dataset NOT the forecast dataset 	
+	use "/./Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta" //make sure to use the orignal dataset NOT the forecast dataset 	
 	** use freq* as reference to check N% degrease from the original dataset 
 	drop *rmse *_N
 	gen wat_u_rmse=.
@@ -378,7 +378,7 @@ capture drop  uci_`i' lci_`i' yhat_`i' se_`i'
 
 
 ** D.  Combination of bootstrap CI & extrapolation 
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
+use "/./Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
 drop if country_file=="America_United_S"
 **foreach i in Afghanistan Bangladesh Bolivia  {
 
@@ -509,7 +509,7 @@ levelsof country_file, local(levels)
 ** 3. Subsample random selection and sensitivity check (measurement: RMSE) 
 *************************************** 90_75_50_SamplingRMSEcomparison.do ***********************************************************************************************************
 ////////////////////////////////////////////////////////////// 100% of original dataset ////////////////////////////////
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta"
+use "/./Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta"
 gen wat_u_rmse=.
 gen wat_r_rmse=.
 gen san_u_rmse=.
@@ -567,7 +567,7 @@ foreach i of local levels   {
 	
 ///////////////////////// 90% /////////////////////////////////////////////////////////////////////////////
 	clear
-	use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta" //make sure to use the orignal dataset NOT the forecast dataset 	
+	use "/./Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta" //make sure to use the orignal dataset NOT the forecast dataset 	
 	sample 90,by(country_file)
 	// use freq* as reference to check N% degrease from the original dataset 
 	drop *rmse *_N
@@ -615,7 +615,7 @@ foreach i of local levels   {
 		
 ///////////////////////// 75% /////////////////////////////////////////////////////////////////////////////
 	clear
-	use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta" //make sure to use the orignal dataset NOT the forecast dataset 	
+	use "/./Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta" //make sure to use the orignal dataset NOT the forecast dataset 	
 	sample 75,by(country_file)
 	// use freq* as reference to check N% degrease from the original dataset 
 	drop *rmse *_N
@@ -664,7 +664,7 @@ foreach i of local levels   {
 		
 ///////////////////////// 50% /////////////////////////////////////////////////////////////////////////////
 	clear
-	use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta" //make sure to use the orignal dataset NOT the forecast dataset 	
+	use "/./Dropbox/2016_WASH/3files/Graph_data_cleanFreq.dta" //make sure to use the orignal dataset NOT the forecast dataset 	
 	sample 50,by(country_file)
 	// use freq* as reference to check N% degrease from the original dataset 
 	drop *rmse *_N
@@ -716,7 +716,7 @@ foreach i of local levels   {
 
 ** 4. OLS,Piecewaise, quadratic
 *************************************** OLS_piecewise_quadratic.do // OLS,Poecewaise, quadratic Graph building 
-///// DHY Ver 0805
+///// . Ver 0805
 ///// component A : testing for smoothness 
 ///// component B : combined nonlinear fitting including OLS, mspline, LOWESS
 ///// component C : combined nonlinear fitting including OLS, quadratic, 3 knots spline, LOWESS
@@ -724,8 +724,8 @@ foreach i of local levels   {
 
 
 clear
-cd "/Users/DHY/Dropbox/2016_WASH/3files"
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
+cd "/./Dropbox/2016_WASH/3files"
+use "/./Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
 //drop if country_file=="America_United_S"
 set more off
 
@@ -917,12 +917,12 @@ levelsof country_file, local(levels)
 //// End of 3 knots piecewise
 
 *************************************** OLS_piecewise_quadratic_faster_Extrapolation.do // mipolate forward method applied 
-///// DHY Ver 0813
+///// . Ver 0813
 ///// component A : use forward interpolated value for fitting
 
 clear
-cd "/Users/DHY/Dropbox/2016_WASH/3files"
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
+cd "/./Dropbox/2016_WASH/3files"
+use "/./Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
 
 *********************** mspine lowess (Black dots, red/blue line)
 levelsof country_file, local(levels) 
@@ -957,12 +957,12 @@ levelsof country_file, local(levels)
 		//capture drop fitted*	
 	}
  *********************************************  OLS_piecewise_quadratic_faster_Extrapolation_noMipolate.do /// Forecasting without using the mipolate method
- ///// DHY Ver 0813
+ ///// . Ver 0813
 ///// component A : use forward interpolated value for fitting
 
 clear
-cd "/Users/DHY/Dropbox/2016_WASH/3files"
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
+cd "/./Dropbox/2016_WASH/3files"
+use "/./Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
 
 
 append using year_predict2 // Use this for year forecating +3
@@ -1016,7 +1016,7 @@ levelsof country_file, local(levels)
 //// Extrapolation for spline method 
 
 clear
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
+use "/./Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
 set more off
 		
 		/////// OLS ////////////////////////
@@ -1070,7 +1070,7 @@ set more off
 		
 		////// LOWESS /////////////////////////
 		/*
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_5year.dta", clear
+use "/./Dropbox/2016_WASH/3files/Graph_data_5year.dta", clear
 drop if  freq_wat_used_u<4
 drop if  freq_wat_used_r<4
 drop if  freq_san_used_u<4
@@ -1085,7 +1085,7 @@ rename  freqsanU freq_san_used_u
 rename  freqsanR freq_san_used_r
 */
 
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_5year_forRMSEcpmtn.dta",clear
+use "/./Dropbox/2016_WASH/3files/Graph_data_5year_forRMSEcpmtn.dta",clear
 
 	//drop hat* rmse*
 
@@ -1135,8 +1135,8 @@ tabstat  rmse_wat_used_u rmse_wat_used_r rmse_san_used_u rmse_san_used_r, by(cou
 // component B. Generate graphs for each explt method
 // component C. Compare last known value vs last explt value for method-wise comparison
 clear
-cd "/Users/DHY/Dropbox/2016_WASH/3files"
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
+cd "/./Dropbox/2016_WASH/3files"
+use "/./Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
 
 
 append using year_predict2 // Use this for year forecating +3
@@ -1267,7 +1267,7 @@ drop *base* *top*
 
 
 * Object : Compute cross-model RMSE median. 
-* Ver 28082016 DHY
+* Ver 28082016 .
 * Componenet A: LM RMSE  => Variable save
 * Componenet B: LOWESS RMSE => Variable save 
 * Componenet C: Piecewise RMSE  => Variable save 
@@ -1554,7 +1554,7 @@ drop hat* rmse*
 /// Ver 0813 
 // Log file record purpose 
 
-log using "/Users/DHY/Dropbox/2016_WASH/3files/nonlinearRMSEcomparison.log", replace
+log using "/./Dropbox/2016_WASH/3files/nonlinearRMSEcomparison.log", replace
 log off
 forvalues k = 50(25)100 {
 
@@ -1565,7 +1565,7 @@ forvalues k = 50(25)100 {
 //// Extrapolation for spline method 
 
 clear
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
+use "/./Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
 sample `k',by(country_file)
 set more off
 		
@@ -1627,7 +1627,7 @@ log off
 		////// LOWESS /////////////////////////
 
 clear
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_5year_forRMSEcpmtn.dta"
+use "/./Dropbox/2016_WASH/3files/Graph_data_5year_forRMSEcpmtn.dta"
 sample `k',by(country_file)
 
 drop freq*
@@ -2099,8 +2099,8 @@ sum*
 // component B. Generate graphs for each explt method
 // component C. Compare last known value vs last explt value for method-wise comparison
 clear
-cd "/Users/DHY/Dropbox/2016_WASH/3files"
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
+cd "/./Dropbox/2016_WASH/3files"
+use "/./Dropbox/2016_WASH/3files/Graph_data_LM_BSTciComparison.dta" 
 
 
 append using year_predict2 // Use this for year forecating +3
@@ -2353,7 +2353,7 @@ levelsof country_file, local(levels)
 // concept : Similar to yearAppend.do file 
 
 clear
-use "/Users/DHY/Dropbox/2016_WASH/3files/yearAppend_Original.dta"
+use "/./Dropbox/2016_WASH/3files/yearAppend_Original.dta"
 
 *generate base variables
 rename var1 country_file
@@ -2400,7 +2400,7 @@ drop yearmax yearmin n year_n
 drop country
 drop if code==""
 
-save "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_YearappendForward4.dta",replace
+save "/./Dropbox/2016_WASH/3files/Graph_data_YearappendForward4.dta",replace
 
 
 ******************************* Region_Conversion
@@ -2480,14 +2480,14 @@ contract  name_notofficial regions
 drop _freq 
 drop if regions==""
 rename  name_notofficial country_file
-save "/Users/DHY/Dropbox/2016_WASH/3files/Population_WHOregions.dta",replace
+save "/./Dropbox/2016_WASH/3files/Population_WHOregions.dta",replace
 
 sort name_notofficial
 contract name_notofficial region_wbincome2015
 drop _freq 
 drop if region_wbincome2015==""
 rename  name_notofficial country_file
-save "/Users/DHY/Dropbox/2016_WASH/3files/Population_WB2015regions.dta",replace
+save "/./Dropbox/2016_WASH/3files/Population_WB2015regions.dta",replace
 
 
 
@@ -2599,7 +2599,7 @@ drop *basecmrs* *topcmrs*
 
 		
 
- save "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_extrapolation_full.dta"
+ save "/./Dropbox/2016_WASH/3files/Graph_data_extrapolation_full.dta"
 
 
 merge m:m country_file using Population_WHOregions.dta, nogenerate
@@ -2615,7 +2615,7 @@ tabstat  diff_iex*_*,by(region_wbincome2015) s(mean) labelwidth(20)
 
 *********************** Prepare dataset for visualization 
 clear
-use "/Users/DHY/Dropbox/2016_WASH/3files/Graph_data_extrapolation_full.dta"
+use "/./Dropbox/2016_WASH/3files/Graph_data_extrapolation_full.dta"
 drop diff*
 drop yearmin
 drop yearmax
@@ -2634,46 +2634,7 @@ order country* code year
 		//egen rgn_m_prdc_`j'=median( totalimproved`j') if code=="year_Predict", by(regions) // by WHO region
 		}
 
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-	
-
-			
-			
-		
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+// END 
